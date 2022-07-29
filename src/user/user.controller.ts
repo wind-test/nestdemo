@@ -25,7 +25,12 @@ export class UserController {
   @Get()
   @Render('user/index')
   UserIndex(@Query() query, @Response() res) {
-    res.cookie('username', query.username);
+    // res.cookie('username', query.username);
+    res.cookie('username', query.username, {
+      maxAge: 900000,
+      httpOnly: true,
+      signed: true,
+    }); // 加密cookie
     return {
       username: query.username,
     };
@@ -42,7 +47,8 @@ export class UserController {
 
   @Get('getCookie')
   GetCookie(@Request() req) {
-    const username = req.cookies.username;
+    // const username = req.cookies.username;
+    const username = req.signedCookies.username;
     return `cookie中的username为：${username}`;
   }
 
