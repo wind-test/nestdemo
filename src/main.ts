@@ -12,7 +12,9 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   // app.useStaticAssets('public');
-  app.useStaticAssets(join(__dirname, '../public'), { prefix: '/static/' });
+  app.useStaticAssets(join(__dirname, '../public'), { prefix: '/static/' }); // 设置静态资源虚拟路径
+  app.setBaseViewsDir(join(__dirname, '..', 'views')); // 设置模板文件目录
+  app.setViewEngine('ejs'); // 设置模板引擎
   await app.listen(3000);
 }
 bootstrap();
