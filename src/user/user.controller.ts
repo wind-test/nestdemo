@@ -14,6 +14,7 @@ import {
   Response,
   Param,
   ParseIntPipe,
+  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 
@@ -23,9 +24,10 @@ export class UserController {
 
   @Get()
   @Render('user/index')
-  UserIndex(@Query() req) {
+  UserIndex(@Query() query, @Response() res) {
+    res.cookie('username', query.username);
     return {
-      username: req.username,
+      username: query.username,
     };
   }
 
@@ -36,6 +38,12 @@ export class UserController {
     } else {
       res.redirect('/user');
     }
+  }
+
+  @Get('getCookie')
+  GetCookie(@Request() req) {
+    const username = req.cookies.username;
+    return `cookie中的username为：${username}`;
   }
 
   @Get(':id')
