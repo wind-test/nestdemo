@@ -12,6 +12,8 @@ import {
   Render,
   Query,
   Response,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 
@@ -34,5 +36,11 @@ export class UserController {
     } else {
       res.redirect('/user');
     }
+  }
+
+  @Get(':id')
+  UserDetail(@Param('id', new ParseIntPipe()) id) {
+    const result = this.userService.findOne(id);
+    return result;
   }
 }
