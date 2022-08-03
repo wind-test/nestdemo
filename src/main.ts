@@ -10,6 +10,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
+import { GlobalMiddleware } from './middleware/global.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -20,6 +21,7 @@ async function bootstrap() {
   // app.use(cookieParser()); // 配置cookie中间件
   app.use(cookieParser('123')); // 配置加密的cookie
   app.use(session({ secret: '123', cookie: { maxAge: 60000 } }));
+  app.use(GlobalMiddleware);
   await app.listen(3000);
 }
 bootstrap();

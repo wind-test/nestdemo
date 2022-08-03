@@ -9,7 +9,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
-    console.log('打印请求对象：', req);
+    console.log('打印请求链接：', req.url);
     next();
   }
 }
