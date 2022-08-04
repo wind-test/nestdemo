@@ -15,8 +15,16 @@ import {
   Param,
   ParseIntPipe,
   Request,
+  UsePipes,
 } from '@nestjs/common';
+import { UserPipe } from 'src/pipe/user.pipe';
 import { UserService } from './user.service';
+import * as Joi from 'joi';
+
+const userSchema = Joi.object().keys({
+  name: Joi.string().required(),
+  age: Joi.string().required(),
+});
 
 @Controller('user')
 export class UserController {
@@ -50,6 +58,16 @@ export class UserController {
     // const username = req.cookies.username;
     const username = req.signedCookies.username;
     return `cookie中的username为：${username}`;
+  }
+
+  @Get('pipe')
+  // @UsePipes(new UserPipe(userSchema))
+  UserPipePage(@Query(new UserPipe(userSchema)) query) {
+    if (query) {
+      return '通过管道处理后的用户界面';
+    } else {
+      return '请求参数不符合要求';
+    }
   }
 
   @Get(':id')
