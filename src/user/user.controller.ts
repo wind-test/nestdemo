@@ -20,6 +20,8 @@ import {
 import { UserPipe } from 'src/pipe/user.pipe';
 import { UserService } from './user.service';
 import * as Joi from 'joi';
+import { ValidationPipe } from 'src/pipe/vilidate.pipe';
+import { UserDto } from './dto/user.dto';
 
 const userSchema = Joi.object().keys({
   name: Joi.string().required(),
@@ -60,14 +62,19 @@ export class UserController {
     return `cookie中的username为：${username}`;
   }
 
+  // @Get('pipe')
+  // // @UsePipes(new UserPipe(userSchema))
+  // UserPipePage(@Query(new UserPipe(userSchema)) query) {
+  //   if (query) {
+  //     return '通过管道处理后的用户界面';
+  //   } else {
+  //     return '请求参数不符合要求';
+  //   }
+  // }
+
   @Get('pipe')
-  // @UsePipes(new UserPipe(userSchema))
-  UserPipePage(@Query(new UserPipe(userSchema)) query) {
-    if (query) {
-      return '通过管道处理后的用户界面';
-    } else {
-      return '请求参数不符合要求';
-    }
+  UserPipePage(@Query(new ValidationPipe()) query: UserDto) {
+    return '类验证器页面';
   }
 
   @Get(':id')
