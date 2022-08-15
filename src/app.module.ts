@@ -16,9 +16,10 @@ import { NewsController } from './news/news.controller';
 import { UserModule } from './user/user.module';
 import { UploadModule } from './upload/upload.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
-  imports: [UserModule, UploadModule],
+  imports: [UserModule, UploadModule, AdminModule],
   controllers: [AppController, NewsController],
   providers: [AppService],
 })
