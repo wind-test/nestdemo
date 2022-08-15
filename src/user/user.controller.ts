@@ -22,6 +22,7 @@ import { UserService } from './user.service';
 import * as Joi from 'joi';
 import { ValidationPipe } from 'src/pipe/vilidate.pipe';
 import { UserDto } from './dto/user.dto';
+import { AdminService } from 'src/admin/admin.service';
 
 const userSchema = Joi.object().keys({
   name: Joi.string().required(),
@@ -30,7 +31,17 @@ const userSchema = Joi.object().keys({
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly adminService: AdminService,
+  ) {}
+
+  @Get('admin')
+  IsAdmin(@Query('username') username) {
+    const adminList = this.adminService.getAdminList();
+    const result = adminList.find((i) => i.username === username);
+    return result ? '管理员用户' : '非管理员用户';
+  }
 
   @Get()
   @Render('user/index')
