@@ -5,6 +5,7 @@
  * @Description: description of this file
  */
 import {
+  forwardRef,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -17,9 +18,10 @@ import { UserDetailMiddleware } from 'src/middleware/user-detail.middleware';
 import { AdminModule } from 'src/admin/admin.module';
 
 @Module({
-  imports: [AdminModule],
+  imports: [forwardRef(() => AdminModule)],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
