@@ -16,6 +16,7 @@ import {
   ParseIntPipe,
   Request,
   UsePipes,
+  UseGuards,
 } from '@nestjs/common';
 import { UserPipe } from 'src/pipe/user.pipe';
 import { UserService } from './user.service';
@@ -23,6 +24,7 @@ import * as Joi from 'joi';
 import { ValidationPipe } from 'src/pipe/vilidate.pipe';
 import { UserDto } from './dto/user.dto';
 import { AdminService } from 'src/admin/admin.service';
+import { AuthGuard } from 'src/guard/auth.guard';
 
 const userSchema = Joi.object().keys({
   name: Joi.string().required(),
@@ -37,10 +39,14 @@ export class UserController {
   ) {}
 
   @Get('admin')
-  IsAdmin(@Query('username') username) {
-    const adminList = this.adminService.getAdminList();
-    const result = adminList.find((i) => i.username === username);
-    return result ? '管理员用户' : '非管理员用户';
+  @UseGuards(AuthGuard)
+  // IsAdmin(@Query('username') username) {
+  //   const adminList = this.adminService.getAdminList();
+  //   const result = adminList.find((i) => i.username === username);
+  //   return result ? '管理员用户' : '非管理员用户';
+  // }
+  AdminPage() {
+    return '欢迎来到管理员界面';
   }
 
   @Get()
